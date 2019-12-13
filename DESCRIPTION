@@ -21,7 +21,7 @@ License: GPL (>=3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Imports: stats, reshape, ggplot2, pROC, vcdExtra,
+Imports: stats, reshape (>=0.8.6), tidyverse, pROC, vcdExtra,
          nnet, MASS, ResourceSelection, irr,
          BradleyTerry2
 Roxygen: list(Markdown = T)
