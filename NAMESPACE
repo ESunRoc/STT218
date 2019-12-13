@@ -1,0 +1,3 @@
+importFrom("stats", "qnorm")
+importFrom("stats", "pchisq")
+exportPattern("^[[:alpha:]]+")
