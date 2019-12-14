@@ -1,0 +1,38 @@
+---
+title: "STT 218 Data Analysis in R"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+library(URStat218)
+```
+
+All notes in the vignettes of this package are adapted from Dr. Joseph Ciminelli's fall 2019 section of Statistics 218. For a more complete version of the material herein contained, please reference the notes, attend the lectures, or ask Dr. Ciminelli himself.  
+
+## 2x2 Contingency Tables  
+We begin by taking a contingency table on X and Y, where the rows are fixed:  
+
+  
+|X (Explanatory)|Y(Response)        |            |             |
+|:--:           |:--:               |:--:        |:--:         |
+|               |1                  |2           |  Total      |
+|1              |   $n_{11}$        | $n_{12}$   |   $n_{1+}$  |
+|2              |    $n_{21}$       |  $n_{22}$  |   $n_{2+}$  |
+
+For this 2x2 table, we have two independent binomial proportions, one for each level of X:
+$$n_{11} \sim Binom(n_{1+},p_{1|1})$$
+$$n_{21} \sim Binom(n_{2+},p_{1|2})$$
+Ultimately, we wish to test the significance of the difference in the two groups' proportions. If there is a significant difference, we conclude X and Y to be significantly associated, while the opposite leads to a correspondingly opposite conclusion.  
+As we are testing for independence, with unknown probabilities $p_{1|1}$ and $p_{1|2}$, we test against a null hypothesis of $H_0: p_{1|1} =p_{1|2}$; that is, that the proportions are independent and equal. Of the methods available to us, we note that R has built-in support for a difference-of-proportions test. We discuss in greater detail Relative Risk and Odds Ratio tests, as this package creates functions for them.
