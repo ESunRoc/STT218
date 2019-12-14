@@ -1,0 +1,5 @@
+chisq.LRtest            Chi-Squared Likliehood Ratio Test
+linear.trend            Linear Trend Test
+local.odds              Local Odds Ratio
+odds                    Odds Ratio
+relrisk                 Relative Risk
