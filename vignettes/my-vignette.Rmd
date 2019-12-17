@@ -23,7 +23,6 @@ All notes in the vignettes of this package are adapted from Dr. Joseph Ciminelli
 
 ## 2x2 Contingency Tables  
 We begin by taking a contingency table on X and Y, where the rows are fixed:  
-
   
 |X (Explanatory)|Y(Response)        |            |             |
 |:--:           |:--:               |:--:        |:--:         |
@@ -36,4 +35,33 @@ $$n_{11} \sim Binom(n_{1+},p_{1|1})$$
 $$n_{21} \sim Binom(n_{2+},p_{1|2})$$
 Ultimately, we wish to test the significance of the difference in the two groups' proportions. If there is a significant difference, we conclude X and Y to be significantly associated, while the opposite leads to a correspondingly opposite conclusion.  
 As we are testing for independence, with unknown probabilities $p_{1|1}$ and $p_{1|2}$, we test against a null hypothesis of $H_0: p_{1|1} =p_{1|2}$; that is, that the proportions are independent and equal. Of the methods available to us, we note that R has built-in support for a difference-of-proportions test. We discuss in greater detail Relative Risk and Odds Ratio tests, as this package creates functions for them.  
-### Relative Risk:
+
+## Relative Risk
+### Theory
+An equivalent expression for our null hypothesis is $H_0:\frac{p_{1|1}}{p_{1|2}}=1$. This quantity is known as the relative risk. In this form, the relative risk is describing a population based on population parameters. In order to estimate the population relative risk, we calculate sample relative risk as: $r=\frac{{\hat{p}_{1|1}}}{\hat{p}_{1|2}}$. In order to preserve the distribution of the population, we take the log (that is, the natural log) of the relative risk:
+$$log\left(\frac{p_{1|1}}{p_{1|2}}\right)=log({p_{1|1}})-log({p_{1|2}})$$
+and
+$$log\left(\frac{\hat{p}_{1|1}}{\hat{p}_{1|2}}\right)=log(\hat{p}_{1|1})-log(\hat{p}_{1|2})$$  
+We note here that our estimator $log(r)$ is actually a biased estimator, with a better estimator for relative risk existing as
+$$log(\tilde{r})=log\left(\frac{n_{11}+1/2}{n_{1+}+1/2}\right)-log\left(\frac{n_{21}+1/2}{n_{2+}+1/2}\right).$$
+For the purposes of this course, and therefore this package, however, $log(r)$ proves to be sufficient.  
+In order to actually test $H_0$, we create a confidence interval on our log-odds scale. To do this, we take the standard error of $log(r),$ assuming the sample size is sufficiently large, to be:
+$$\hat{\sigma}(log(r))=\sqrt{\frac{n_{12}}{n_{11}n_{1+}}+\frac{n_{22}}{n_{21}n_{2+}}}$$
+Again assuming a large enough sample size, we approximate the distribution of $log(r)$ to be normal with the $(1-\alpha)\times 100\%$ confidence interval to be:
+$$log(r) \pm z_{\alpha/2}\sqrt{\frac{n_{12}}{n_{11}n_{1+}}+\frac{n_{22}}{n_{21}n_{2+}}},$$
+where $z_{\alpha/2}$ is the normal z-score at $\frac{\alpha}{2}.$  
+We can then back-transform this interval to put it back on our original scale. We do this by simply exponentiating both cases, finding the interval to be:
+$$\left(e^{log(r) -z_{\alpha/2}\sqrt{\frac{n_{12}}{n_{11}n_{1+}}+\frac{n_{22}}{n_{21}n_{2+}}}}, e^{log(r) +z_{\alpha/2}\sqrt{\frac{n_{12}}{n_{11}n_{1+}}+\frac{n_{22}}{n_{21}n_{2+}}}}\right)$$
+If 1 is included in this interval, we fail to reject $H_0.$ If 1 is not included, we reject $H_0,$ and conclude that there is association between our two variables.  
+#### Example
+*Add example*  
+### In R
+The function `relrisk` performs this calculation for us. At its default, `relrisk` performs this test at a 95\% confidence interval, conf.level, on some 2x2 table, tab, defined by the user. It begins by assigning each cell of the table to a variable (n11, n12, and so on) and storing the marginal totals (n11+n12 and n21+n22) as n1 and n2, respectively. The sample proportions, $p_{1|1}$ and $p_{1|2}$ are then calculated and stored as p1 and p2, respectively. From these, r is calculated, along with $\alpha$ and z. The log-odds scale bounds are then calculated by simply plugging the stored values into the equation as given above. Original-scale bounds are then caculated by exponentiating each of the log-odds scale bounds. These are then returned to 5 decimal places, along with the confidence level tested at.
+#### Example
+*Add Example
+
+
+
+
+
+
