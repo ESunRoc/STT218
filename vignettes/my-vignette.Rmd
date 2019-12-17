@@ -45,7 +45,7 @@ $$log\left(\frac{\hat{p}_{1|1}}{\hat{p}_{1|2}}\right)=log(\hat{p}_{1|1})-log(\ha
 We note here that our estimator $log(r)$ is actually a biased estimator, with a better estimator for relative risk existing as
 $$log(\tilde{r})=log\left(\frac{n_{11}+1/2}{n_{1+}+1/2}\right)-log\left(\frac{n_{21}+1/2}{n_{2+}+1/2}\right).$$
 For the purposes of this course, and therefore this package, however, $log(r)$ proves to be sufficient.  
-In order to actually test $H_0$, we create a confidence interval on our log-odds scale. To do this, we take the standard error of $log(r),$ assuming the sample size is sufficiently large, to be:
+In order to actually test $H_0$, we create a confidence interval on our log scale. To do this, we take the standard error of $log(r),$ assuming the sample size is sufficiently large, to be:
 $$\hat{\sigma}(log(r))=\sqrt{\frac{n_{12}}{n_{11}n_{1+}}+\frac{n_{22}}{n_{21}n_{2+}}}$$
 Again assuming a large enough sample size, we approximate the distribution of $log(r)$ to be normal with the $(1-\alpha)\times 100\%$ confidence interval to be:
 $$log(r) \pm z_{\alpha/2}\sqrt{\frac{n_{12}}{n_{11}n_{1+}}+\frac{n_{22}}{n_{21}n_{2+}}},$$
@@ -54,11 +54,33 @@ We can then back-transform this interval to put it back on our original scale. W
 $$\left(e^{log(r) -z_{\alpha/2}\sqrt{\frac{n_{12}}{n_{11}n_{1+}}+\frac{n_{22}}{n_{21}n_{2+}}}}, e^{log(r) +z_{\alpha/2}\sqrt{\frac{n_{12}}{n_{11}n_{1+}}+\frac{n_{22}}{n_{21}n_{2+}}}}\right)$$
 If 1 is included in this interval, we fail to reject $H_0.$ If 1 is not included, we reject $H_0,$ and conclude that there is association between our two variables.  
 #### Example
-*Add example*  
+Consider the table  
+
+|Party (X)|Universal Health Care (Y)        |            |             |
+|:--:           |:--:               |:--:        |:--:         |
+|               |Support                  |Oppose           |  Total      |
+|Democrat              |   491        | 813   |   1304  |
+|Republican              |    740       |  558  |   1298  |
+  
+Our $H_0$ for this test is that a person's views on universal health care are independent of that person's political party, with $H_1$ being a statement of association between the two. In notation, these would be:
+$$H_0: \frac{\hat{p}_{1|1}}{\hat{p}_{1|2}}=1$$
+and
+$$H_1: \frac{\hat{p}_{1|1}}{\hat{p}_{1|2}} \neq 1.$$
+We calculate $\hat{p}_{1|1}$ and $\hat{p}_{1|2}$ to be 0.377 and 0.57, respectively, using our definitions from above. We then calculate r as their quotient, finding it to be 0.661, with $log(r)=-.414.$ Testing at the $\alpha=0.05$ significance level, we use the standard $z_{\alpha/2}=1.96$ to set up our interval: $$-0.414 \pm 1.96\sqrt{\frac{813}{491\cdot1304}+\frac{558}{740\cdot1298}}.$$ Recall, however, that this interval is a log scale and that we must exponentiate both bounds to get it on our desired scale. While we skip the algebra, we evaluate our bounds, on a linear scale, to be approximately (0.608, 0.719).  
+We conclude, therefore, that we can be 95\% confident that the true population relative risk lies between 0.608 and 0.719. As 1 is not within this interval, we reject $H_0$ and conclude that one's opinion of universal health care is associated with their political party. Further, we are 95\% confident that Republicans are between 0.608 and 0.719 times as likely to support unviersal health care as Democrats.
+
 ### In R
 The function `relrisk` performs this calculation for us. At its default, `relrisk` performs this test at a 95\% confidence interval, conf.level, on some 2x2 table, tab, defined by the user. It begins by assigning each cell of the table to a variable (n11, n12, and so on) and storing the marginal totals (n11+n12 and n21+n22) as n1 and n2, respectively. The sample proportions, $p_{1|1}$ and $p_{1|2}$ are then calculated and stored as p1 and p2, respectively. From these, r is calculated, along with $\alpha$ and z. The log-odds scale bounds are then calculated by simply plugging the stored values into the equation as given above. Original-scale bounds are then caculated by exponentiating each of the log-odds scale bounds. These are then returned to 5 decimal places, along with the confidence level tested at.
 #### Example
-*Add Example
+In order to use the `relrisk` function, we first need to define a table. Note that this table could be left undefined, and be simply passed through the function itself; for the sake of readability, we will define it as a unique variable. This is done simply with 
+```{r}
+tab <- matrix(c(491,740,813,558), nrow=2)
+```
+We then proceed with calculating the interval using `relrisk` at the default confidence level:
+```{r}
+relrisk(tab)
+```
+As the numeric values are identical to those in the non-R example, we draw the same conclusions.
 
 
 
