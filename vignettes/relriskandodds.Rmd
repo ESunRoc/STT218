@@ -37,7 +37,7 @@ Ultimately, we wish to test the significance of the difference in the two groups
 As we are testing for independence, with unknown probabilities $p_{1|1}$ and $p_{1|2}$, we test against a null hypothesis of $H_0: p_{1|1} =p_{1|2}$; that is, that the proportions are independent and equal. Of the methods available to us, we note that R has built-in support for a difference-of-proportions test. We discuss in greater detail Relative Risk and Odds Ratio tests, as this package creates functions for them.  
 
 ## Relative Risk
-### Theory
+## Theory
 An equivalent expression for our null hypothesis is $H_0:\frac{p_{1|1}}{p_{1|2}}=1$. This quantity is known as the relative risk. In this form, the relative risk is describing a population based on population parameters. In order to estimate the population relative risk, we calculate sample relative risk as: $r=\frac{{\hat{p}_{1|1}}}{\hat{p}_{1|2}}$. In order to preserve the distribution of the population, we take the log (that is, the natural log) of the relative risk:
 $$log\left(\frac{p_{1|1}}{p_{1|2}}\right)=log({p_{1|1}})-log({p_{1|2}})$$
 and
@@ -53,7 +53,7 @@ where $z_{\alpha/2}$ is the normal z-score at $\frac{\alpha}{2}.$
 We can then back-transform this interval to put it back on our original scale. We do this by simply exponentiating both cases, finding the interval to be:
 $$\left(e^{log(r) -z_{\alpha/2}\sqrt{\frac{n_{12}}{n_{11}n_{1+}}+\frac{n_{22}}{n_{21}n_{2+}}}}, e^{log(r) +z_{\alpha/2}\sqrt{\frac{n_{12}}{n_{11}n_{1+}}+\frac{n_{22}}{n_{21}n_{2+}}}}\right)$$
 If 1 is included in this interval, we fail to reject $H_0.$ If 1 is not included, we reject $H_0,$ and conclude that there is association between our two variables.  
-#### Example
+## Example
 Consider the table  
 
 |Party (X)|Universal Health Care (Y)        |            |             |
@@ -69,9 +69,9 @@ $$H_1: \frac{\hat{p}_{1|1}}{\hat{p}_{1|2}} \neq 1.$$
 We calculate $\hat{p}_{1|1}$ and $\hat{p}_{1|2}$ to be 0.377 and 0.57, respectively, using our definitions from above. We then calculate r as their quotient, finding it to be 0.661, with $log(r)=-.414.$ Testing at the $\alpha=0.05$ significance level, we use the standard $z_{\alpha/2}=1.96$ to set up our interval: $$-0.414 \pm 1.96\sqrt{\frac{813}{491\cdot1304}+\frac{558}{740\cdot1298}}.$$ Recall, however, that this interval is a log scale and that we must exponentiate both bounds to get it on our desired scale. While we skip the algebra, we evaluate our bounds, on a linear scale, to be approximately (0.608, 0.719).  
 We conclude, therefore, that we can be 95\% confident that the true population relative risk lies between 0.608 and 0.719. As 1 is not within this interval, we reject $H_0$ and conclude that one's opinion of universal health care is associated with their political party. Further, we are 95\% confident that Republicans are between 0.608 and 0.719 times as likely to support unviersal health care as Democrats.
 
-### In R
+## In R
 The function `relrisk` performs this calculation for us. At its default, `relrisk` performs this test at a 95\% confidence interval, conf.level, on some 2x2 table, tab, defined by the user. It begins by assigning each cell of the table to a variable (n11, n12, and so on) and storing the marginal totals (n11+n12 and n21+n22) as n1 and n2, respectively. The sample proportions, $p_{1|1}$ and $p_{1|2}$ are then calculated and stored as p1 and p2, respectively. From these, r is calculated, along with $\alpha$ and z. The log-odds scale bounds are then calculated by simply plugging the stored values into the equation as given above. Original-scale bounds are then caculated by exponentiating each of the log-odds scale bounds. These are then returned to 5 decimal places, along with the confidence level tested at.
-#### Example
+## Example
 In order to use the `relrisk` function, we first need to define a table. Note that this table could be left undefined, and be simply passed through the function itself; for the sake of readability, we will define it as a unique variable. This is done simply with 
 ```{r}
 tab <- matrix(c(491,740,813,558), nrow=2)
@@ -91,8 +91,9 @@ As the numeric values are identical to those in the non-R example, we draw the s
 
 \medskip
 
+
 ## Odds Ratio
-### Theory
+## Theory
 For any experiment, the success of a given trial is given simply as $\Omega=\frac{P(success)}{P(failure)}=\frac{P(success)}{1-P(success)}$. For any 2x2 table, we extend this to find the odds of a particular row. For row 1, we find the odds to be:
 $$\Omega_1=\frac{p_{1|1}}{p_{2|1}}=\frac{P(success|X=1)}{P(failure|X=1)}=\frac{P(success|X=1)}{1-P(success|X=1)}$$
 And for row 2, we find them to be:
@@ -112,11 +113,11 @@ $$log(\hat{\theta})\pm z_{\alpha/2}\sqrt{\frac{1}{n_{11}}+\frac{1}{n_{12}}+\frac
 Exponentiating out the bounds of this interval yields the confidence interval at confidence level $1-\alpha$ of
 $$\left(e^{log(\hat{\theta})-z_{\alpha/2}\sqrt{\frac{1}{n_{11}}+\frac{1}{n_{12}}+\frac{1}{n_{21}}+\frac{1}{n_{22}}}},e^{log(\hat{\theta})+ z_{\alpha/2}\sqrt{\frac{1}{n_{11}}+\frac{1}{n_{12}}+\frac{1}{n_{21}}+\frac{1}{n_{22}}}}\right).$$
 Again like relative risk, we reject $H_0$ and conclude association if 1 is within the bounds. Otherwise, we fail to reject $H_0,$ having found insufficient evidence for association.  
-#### Example
-Consider the same table from the relative risk example. While the the idea behind the hypotheses remains the same, we reformulate them simply to be $H_0:\theta=1$ and $H_1:\theta\neq 1.$ $\hat{\theta}$ is found simply, using the formula above, to be $\theta=0.455,$ with its log being $log(\hat{\theta})=-0.787$. Testing at the 95\% confidence level, we find our interval to be   
-### In R
-
-#### Example
+## Example
+Consider the same table from the relative risk example. While the the idea behind the hypotheses remains the same, we reformulate them simply to be $H_0:\theta=1$ and $H_1:\theta\neq 1.$ $\hat{\theta}$ is found simply, using the formula above, to be $\theta=0.455,$ with its log being $log(\hat{\theta})=-0.787$. Testing at the 95\% confidence level, we find our interval to be (0.389, 0.533). As 1 is not within this interval, we reject $H_0,$ having found statistically significant evidence to suggest that one's views on universal health care and their party affiliation are associated and we can be 95\% confident that this interval captures the true population odds ratio. Further, we are 95% confident that the odds a person is a Republican given they support universal health care are between 0.389 and 0.533 times those of that person being a Democrat. 
+## In R
+`odds` functions identically to `relrisk`, save for the test statistic being calculated is $\hat{\theta}$ instead of r. This calculation is done using the formula above, or, in R: `theta <- (n11*n22)/(n12*n21)`.
+## Example
 Using the same example as above, and recalling the table created in the R example from relative risk, we simply apply the function:
 ```{r}
 odds(tab)
