@@ -82,15 +82,7 @@ relrisk(tab)
 ```
 As the numeric values are identical to those in the non-R example, we draw the same conclusions.
 
-
-
-
-
-
-
-
 \medskip
-
 
 ## Odds Ratio
 ## Theory
