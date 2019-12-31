@@ -1,4 +1,4 @@
-#' Chi-Squared Likliehood Ratio Test
+#' Chi-Squared Liklihood Ratio Test
 #'
 #'  This function calculates the likeliehood ratios for the independence test of the same name.
 #'

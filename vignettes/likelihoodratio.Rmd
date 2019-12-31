@@ -1,0 +1,38 @@
+---
+title: "Chi-Squared Liklihood Ratio Test"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, include=FALSE}
+library(URStat218)
+```
+
+All notes in the vignettes of this package are adapted from Dr. Joseph Ciminelli's fall 2019 section of Statistics 218. For a more complete version of the material herein contained, please reference the notes, attend the lectures, or ask Dr. Ciminelli himself.  
+
+## $\chi^2$ Test of Independence
+
+For an $I \times J$ table, we have two different possible tests for independence when $I>2$ and $J>2$ (in the cases where I and J are less than 2, we have the tests outlined in `relriskandodds.rmd`). Namely, the Pearson $\chi^2$ test and the likelihood ratio test. As R has built-in support for the former, we focus here on the latter.   
+In general, we have, for all $i = 1,2,...,I$ and $j = 1,2,...,J$, independence when $p_{ij}=p_{i+}p_{j+}$. As such, we formulate our hypotheses to be:
+$$H_0: p_{ij}=p_{i+}p_{j+}$$
+$$H_1: p_{ij}\neq p_{i+}p_{j+}$$
+By using a likelihood ratio test, we are comparing the best estimates of the parameter of interest under the null, to that of either a truthful null or truthful alternative. For similar values, we support $H_0$. For drastically different values, we support $H_1$.  
+In order to test these hypotheses, we calculate a $G^2$ test statistic as:
+$$G^2 = 2\sum_{i=1}^{I} \sum_{j=1}^{J} n_{ij} \space \text{log} \left(\frac{n_{ij}}{\hat\mu_{ij}}\right)$$
+where $\hat\mu_{ij}$ is our expected count in cell (i,j), given by $\hat\mu_{ij}=\frac{n_{i+}n_{+j}}{n}$.
+
+
+
+
+
