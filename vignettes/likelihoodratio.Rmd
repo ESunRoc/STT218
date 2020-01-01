@@ -23,6 +23,7 @@ All notes in the vignettes of this package are adapted from Dr. Joseph Ciminelli
 
 ## $\chi^2$ Test of Independence
 
+### Theory
 For an $I \times J$ table, we have two different possible tests for independence when $I>2$ and $J>2$ (in the cases where I and J are less than 2, we have the tests outlined in `relriskandodds.rmd`). Namely, the Pearson $\chi^2$ test and the likelihood ratio test. As R has built-in support for the former, we focus here on the latter.   
 In general, we have, for all $i = 1,2,...,I$ and $j = 1,2,...,J$, independence when $p_{ij}=p_{i+}p_{j+}$. As such, we formulate our hypotheses to be:
 $$H_0: p_{ij}=p_{i+}p_{j+}$$
@@ -30,9 +31,45 @@ $$H_1: p_{ij}\neq p_{i+}p_{j+}$$
 By using a likelihood ratio test, we are comparing the best estimates of the parameter of interest under the null, to that of either a truthful null or truthful alternative. For similar values, we support $H_0$. For drastically different values, we support $H_1$.  
 In order to test these hypotheses, we calculate a $G^2$ test statistic as:
 $$G^2 = 2\sum_{i=1}^{I} \sum_{j=1}^{J} n_{ij} \space \text{log} \left(\frac{n_{ij}}{\hat\mu_{ij}}\right)$$
-where $\hat\mu_{ij}$ is our expected count in cell (i,j), given by $\hat\mu_{ij}=\frac{n_{i+}n_{+j}}{n}$.
+where $\hat\mu_{ij}$ is our expected count in cell $(i,j)$, given by $\hat\mu_{ij}=\frac{n_{i+}n_{+j}}{n}$.  
+Under the null hypothesis, our $G^2$ test statistic follows a $\chi^2_{df}$ distribution with degrees of freedom equal to the product of the columns minus one and the rows minus one (df=(I-1)(J-1)). As with other inference tests, we then use this test statistic to calculate a p-value which we compare against our significance level, $\alpha$.
+  
+### Example
+Consider the table
 
+|Party (X)|Universal Health Care (Y)        |            |             |
+|:--:           |:--:               |:--:        |:--:         |
+|               |Support                  |Oppose           |  Total      |
+|Democrat              |   491        | 813   |   1304  |
+|Republican              |    740       |  558  |   1298  |
 
+which compares one's political party (X) to their view on universal health care (Y).  
+Using our formula for calculating the expected mean, $\hat\mu_{ij}=\frac{n_{i+}n_{+j}}{n}$, we can rewrite the table as (remembering that the marginal totals are fixed and constant):
+
+|Party (X)|Universal Health Care (Y)        |            |             |
+|:--:           |:--:               |:--:        |:--:         |
+|               |Support                  |Oppose           |  Total      |
+|Democrat              |   616.9        | 687.1   |   1304  |
+|Republican              |    614.1       |  683.9  |   1298  |
+
+We are interested in determining whether one's party affiliation is independent of their opinion on universal health care. As such, we formulate our hypotheses to be:
+$$H_0: p_{ij}=p_{i+}p_{+j}$$
+$$H_1: p_{ij} \neq p_{i+}p_{+j}$$
+Using the given formula for $G^2$, we find our test statistic to be ~98.41 with $\text{df}=(2-1)(2-1)=1$. We canthen calculate our p-value to be approximately 0. As such, we reject $H_0$. We can state, with a high degree of statistical certainty, that one's views on UHC and their political affiliation are, at some level, associated. 
+  
+### In R
+The function `chisq.LRtest` takes an argument in the form of a table (either stored as table data type or passed through the function directly via `table()`). Where we calculate $\hat{\mu}$ by hand using the formula $\hat\mu_{ij}=\frac{n_{i+}n_{+j}}{n}$, we do this in R via an equivalent, albeit slightly more visually complex, form. First, we find the marginal totals for the rows of our table, convert this to a matrix, then multiply it by the transposition of the matrix containing the marginal column totals (formed the same way as that of the rows). We can then divide by the margins of the original table to find the equivalent of $\hat{\mu}$, stored as `exp`. Our test statistic, `G2`, is then calculated using the formula above (translated directly into R as simply `2*sum(tab*log(tab/exp))`). The degrees of freedom are then calculated simply using the formula presented in the Theory section (`(nrow(tab)-1)*(ncol(tab)-1)`), and the one-sided p-value is calculated using `pchisq` with arguments `G2`, `df=df1`, `lower.tail=F`. The name of the test, test statistic, degrees of freedom, and p-value are then returned as output.
+
+### Example
+Recall the table used in the previous example. Putting it into R, we have 
+```{r}
+tab <- matrix(c(491,740,813,558), nrow=2)
+```
+Then, simply applying the `chisq.LRtest` function (while testing at the $\alpha$=0.05 significance level, again as above):
+```{r}
+chisq.LRtest(tab)
+```
+This gives a p-value on the order of $10^{-23}$ or, approximately 0. As this is much lower than our $\alpha$, we reject $H_0$, having found statistically significant evidence to suggest that one's views on UHC are related to their political party affiliation.
 
 
 
