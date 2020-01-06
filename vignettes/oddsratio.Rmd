@@ -1,0 +1,74 @@
+---
+title: "Odds Ratio"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+library(URStat218)
+```
+
+All notes in the vignettes of this package are adapted from Dr. Joseph Ciminelli's fall 2019 section of Statistics 218. For a more complete version of the material herein contained, please reference the notes, attend the lectures, or ask Dr. Ciminelli himself.  
+
+## Odds Ratio
+  
+### Theory
+We begin by taking a 2 $\times$ 2 contingency table on X and Y, where the rows are fixed:  
+  
+|X (Explanatory)|Y(Response)        |            |             |
+|:--:           |:--:               |:--:        |:--:         |
+|               |1                  |2           |  Total      |
+|1              |   $n_{11}$        | $n_{12}$   |   $n_{1+}$  |
+|2              |    $n_{21}$       |  $n_{22}$  |   $n_{2+}$  |
+
+For this 2x2 table, we have two independent binomial proportions, one for each level of X:
+$$n_{11} \sim \text{Binom}(n_{1+},p_{1|1})$$
+$$n_{21} \sim \text{Binom}(n_{2+},p_{1|2})$$
+Ultimately, we wish to test the significance of the difference in the two groups' proportions. If there is a significant difference, we conclude X and Y to be significantly associated, while the opposite leads to a correspondingly opposite conclusion.  
+As we are testing for independence, with unknown probabilities $p_{1|1}$ and $p_{1|2}$, we test against a null hypothesis of $H_0: p_{1|1} =p_{1|2}$; that is, that the proportions are independent and equal. Of the methods available to us, we note that R has built-in support for a difference-of-proportions test.  
+For any experiment, the success of a given trial is given simply as $\Omega=\frac{P(\text{success})}{P(\text{failure})}=\frac{P(\text{success})}{1-P(\text{success})}$. For any 2x2 table, we extend this to find the odds of a particular row. For row 1, we find the odds to be:
+$$\Omega_1=\frac{p_{1|1}}{p_{2|1}}=\frac{P(\text{success}|X=1)}{P(\text{failure}|X=1)}=\frac{P(\text{success}|X=1)}{1-P(\text{success}|X=1)}$$
+And for row 2, we find them to be:
+$$\Omega_1=\frac{p_{1|2}}{p_{2|2}}=\frac{P(success|X=2)}{P(failure|X=2)}=\frac{P(success|X=2)}{1-P(success|X=2)}$$
+We calculate the ratio of these odds (a quantity, expectedly, called the odds ratio) as:
+$$\theta=\frac{\Omega_1}{\Omega_2}=\frac{p_{1|1}/(1-p_{1|1})}{p_{1|2}/(1-p_{1|2})}=\frac{p_{1|1}/p_{2|1}}{p_{1|2}/p_{2|2}}.$$
+Therefore, two categorical variables X and Y are independent if and only if $\theta=1$ (that is, $\Omega_1=\Omega_2$). $\theta$ will always be bound by 0 and $\infty$. In this range, if $\theta=1$, then we have independence between group membership and response (X and Y). If $\theta>0,$ there are higher odds favoring success in group 1 than in row 2 (category 1 is more likely to have a success). If $0<\theta<1,$ there are lower odds favoring success in row 1 than row 2 (category 1 is less likely to have a success). As $\theta$ increases past 1, the association between X and Y becomes stronger.  
+A luxury of the odds ratio is its ability to be written only in terms of joint probabilities:
+$$\theta=\frac{p_{11}/p_{12}}{p_{21}/p_{22}}=\frac{p_{11}\cdot p_{22}}{p_{12}\cdot p_{21}}$$
+From this population odds ratio, we create our sample odds ratio simply as:
+$$\hat{\theta}=\frac{\hat{p}_{11}\cdot \hat{p}_{22}}{\hat{p}_{12}\cdot \hat{p}_{21}}=\frac{n_{11}n_{22}}{n_{12}n_{21}}$$
+We note here that, like relative risk, there exists an improved sample estimator of the odds ratio achieved by adding $\frac{1}{2}$ to all cells. For the purposes of this class, our simpler estimator is sufficient.  
+Like the relative risk, it is easier for us to work on the log scale for inference purposes before back-transforming to our desired scale. When testing $H_0: \theta=1,$ we find the standard error of $\hat{\theta}$ to be: 
+$$\hat{\sigma}((\hat{\theta}))=\sqrt{\frac{1}{n_{11}}+\frac{1}{n_{12}}+\frac{1}{n_{21}}+\frac{1}{n_{22}}}$$
+We construct our interval, assuming large sample size for approximate normality, simply to be:
+$$(\hat{\theta})\pm z_{\alpha/2}\sqrt{\frac{1}{n_{11}}+\frac{1}{n_{12}}+\frac{1}{n_{21}}+\frac{1}{n_{22}}}$$
+Exponentiating out the bounds of this interval yields the confidence interval at confidence level $1-\alpha$ of
+$$\left(e^{(\hat{\theta})-z_{\alpha/2}\sqrt{\frac{1}{n_{11}}+\frac{1}{n_{12}}+\frac{1}{n_{21}}+\frac{1}{n_{22}}}},e^{(\hat{\theta})+ z_{\alpha/2}\sqrt{\frac{1}{n_{11}}+\frac{1}{n_{12}}+\frac{1}{n_{21}}+\frac{1}{n_{22}}}}\right)$$
+Again like relative risk, we reject $H_0$ and conclude association if 1 is within the bounds. Otherwise, we fail to reject $H_0,$ having found insufficient evidence for association.  
+  
+### Example
+Consider the same table from the relative risk example. While the the idea behind the hypotheses remains the same, we reformulate them simply to be $H_0:\theta=1$ and $H_1:\theta\neq 1.$ $\hat{\theta}$ is found simply, using the formula above, to be $\theta=0.455,$ with its log being $(\hat{\theta})=-0.787$. Testing at the 95\% confidence level, we find our interval to be (0.389, 0.533). As 1 is not within this interval, we reject $H_0,$ having found statistically significant evidence to suggest that one's views on universal health care and their party affiliation are associated and we can be 95\% confident that this interval captures the true population odds ratio. Further, we are 95% confident that the odds a person is a Republican given they support universal health care are between 0.389 and 0.533 times those of that person being a Democrat. 
+ 
+   
+### In R
+The `odds` functions identically to `relrisk`, save for the test statistic being calculated is $\hat{\theta}$ instead of r. This calculation is done using the formula above, or, in R: `theta <- (n11*n22)/(n12*n21)`.  
+  
+### Example
+Using the same example as above (recalling the stored table, `tab`), and recalling the table created in the R example from relative risk, we simply apply the function:
+```{r}
+odds(tab)
+```
+As 1 is not within this interval, we reach the same conclusions as in the above examples and reject $H_0$.
+

@@ -1,0 +1,49 @@
+---
+title: "Local Odds Ratio"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+library(URStat218)
+```
+
+## Local Odds Ratios
+
+## Theory
+While the odds ratio is useful in giving us information on the direction and strength of a calculated association, it is restricted to beiung used on 2 $\times$ 2 contingency tables. As such, we wish to formulate a different test statistic that allows us to compare across anyI $\times$ J contingency table. In order to do this, we extend odds ratios to local odds ratios.  
+While it is possible to do something similar by creating all possible 2 $\times$ 2 sub-tables and calculating their associated odds ratios, this is needlessly complex, with it requiring $I\choose 2$ $\times$ $J\choose 2$ different odds ratio calculations. Instead, information can be borrowed from across tables. By only considering neighboring cells, we only have to calulate $(I-1)(J-1)$ local odds ratios--- those for adjacent rows and columns. These are given in the form:
+$$\theta_{ij}=\frac{p_{ij}p_{i+1,j+1}}{p_{i,j+1}p_{i+1,j}},\ \ \ i=1,2,...,I-1 \ \ \text{and} \ \   j=1,2,...,J-1$$
+By calculating for adjacent rows and columns, we cn find the local odds ratio for any other odds ratio of interest simply by multiplying through with the knowns. If, for example, we seek the odds ratio between rows 1 and 2 and columns 1 and 3, we can simply calculate:
+$$\frac{p_{11}p_{23}}{p_{21}p_{13}}=\frac{p_{11}p_{22}}{p_{12}p_{21}}\times \frac{p_{12}p_{23}}{p_{22}p_{13}}$$
+Then, similarly to the normal odds ratio, X and Y are said to be intependent if the estimated local odds ratios for all $\i$ and $\j$ are $\approx$ 1.
+
+## Example
+
+
+
+
+
+
+## In R
+In R, the process of calculating the local odds ratio is done iteratively with a series of `for` loops. Taking a table as its argument, the function `local.odds` assigns the rows to local variable `dim1` and columns to local `dim2`. It then takes each `i` from 1 `dim1-1` and each `j` from 1 to `dim2-1` and stores them as `results[i,j]` for each combination $[i,j]$ local odds ratio. These are then output via `return(results)`.
+
+
+
+## Example
+
+
+
+

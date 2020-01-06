@@ -1,5 +1,6 @@
 ---
 title: "Chi-Squared Liklihood Ratio Test"
+author: "Vignette Author"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
