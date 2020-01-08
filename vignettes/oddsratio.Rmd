@@ -4,7 +4,7 @@ author: "Vignette Author"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{oddsratio}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 library(URStat218)
 ```
 
@@ -66,8 +66,9 @@ Consider the same table from the relative risk example. While the the idea behin
 The `odds` functions identically to `relrisk`, save for the test statistic being calculated is $\hat{\theta}$ instead of r. This calculation is done using the formula above, or, in R: `theta <- (n11*n22)/(n12*n21)`.  
   
 ### Example
-Using the same example as above (recalling the stored table, `tab`), and recalling the table created in the R example from relative risk, we simply apply the function:
+Using the same example as above, and recalling the table created in the R example from relative risk, we simply apply the function:
 ```{r}
+tab <- matrix(c(491,740,813,558), nrow=2)
 odds(tab)
 ```
 As 1 is not within this interval, we reach the same conclusions as in the above examples and reject $H_0$.

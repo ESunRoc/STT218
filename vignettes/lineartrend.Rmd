@@ -4,7 +4,7 @@ author: "Vignette Author"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{lineartrend}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,3 +19,31 @@ knitr::opts_chunk$set(
 ```{r setup, include=FALSE}
 library(URStat218)
 ```
+
+All notes in the vignettes of this package are adapted from Dr. Joseph Ciminelli's fall 2019 section of Statistics 218. For a more complete version of the material herein contained, please reference the notes, attend the lectures, or ask Dr. Ciminelli himself.  
+
+## Linear Trend Test
+  
+### Theory  
+By utilising an idea similar to linear correlation, we create a value that measures the association between two ordinal variables. In keeping with the idea of linear correlation, we assign numerical scores to the rows and columns:
+$$u_1\leq u_2\leq\ldots\leq u_I \ \ \text{for row}$$
+$$v_1\leq v_2\leq\ldots\leq v_J \ \ \text{for column}$$  
+For example, if X has levels, "Never," "Sometimes," "Often," and "Always," we may assign scores 1, 2, 3, and 4. This score assignment is rather arbitrary and can lead to different results in the linear trend, so it should always be reported in order to maintain reproducability.
+Once we have our scores, we calculate the Pearson linear correlation using the formula
+$$r=\frac{\sum_{i}\sum_{j}(x_i-\bar{x_i})(y_j-\bar{y_j})}{\sqrt{\sum_{i}(x_i-\bar{x_i})^2\sum_{j}(y_j-\bar{y_j})^2}}$$
+This correlation reflects the linear dependence between X and Y.  
+In order to use this value to perform a linear trend test, we test $H_0:r=0$ (independence) against $H_1:r\neq 1$ (association). For this test, we use Mantel's statistic, $M^2=(n-1)r^2$, which follows a chi-squared distribution with 1 degree of freedom.  
+Though this test is understandably useful, and relatively intuitive, it does have a rather significant drawback in the variability created by the arbitrary score assignments. In order to mitigate this, it is generally common practice to use a set of monotone scores, as explained above, to describe the data. If the data is described with intervals, using their midpoints is also common and useful.  
+
+
+## In R  
+`linear.trend` takes arguments of a 2$\times$2 contingency table, as well as optional row and column scores. If row and column scores are not passed (as numeric vectors), they are created from 1 to `nrow` or `ncol` for rows and columns, respectively. The various components of the Pearson linear correlation formula are then calculated and stored as values `n`, `p1`, `p2`, `p3`, `p4`, `p5`,   `p6`, and `p7`. These are then used to calculate the numerator and denominator from the Pearson linear correlation formula. These are combined to form the Pearson correlation, with Mantel's test statistic and p-values being calculated in the normal way. $M^2$, p, the parameters, and the type of test are then returned as output.
+
+
+
+
+
+
+
+
+

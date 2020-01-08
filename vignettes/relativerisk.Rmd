@@ -2,7 +2,7 @@
 title: "Relative Risk and Odds Ratio"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my-vignette}
+  %\VignetteIndexEntry{relativerisk}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 
@@ -14,7 +14,9 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-
+```{r setup, include=FALSE}
+library(URStat218)
+```
 
 
 All notes in the vignettes of this package are adapted from Dr. Joseph Ciminelli's fall 2019 section of Statistics 218. For a more complete version of the material herein contained, please reference the notes, attend the lectures, or ask Dr. Ciminelli himself.  

@@ -4,7 +4,7 @@ author: "Vignette Author"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{localoddsratio}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -30,19 +30,9 @@ By calculating for adjacent rows and columns, we cn find the local odds ratio fo
 $$\frac{p_{11}p_{23}}{p_{21}p_{13}}=\frac{p_{11}p_{22}}{p_{12}p_{21}}\times \frac{p_{12}p_{23}}{p_{22}p_{13}}$$
 Then, similarly to the normal odds ratio, X and Y are said to be intependent if the estimated local odds ratios for all $\i$ and $\j$ are $\approx$ 1.
 
-## Example
-
-
-
-
-
 
 ## In R
 In R, the process of calculating the local odds ratio is done iteratively with a series of `for` loops. Taking a table as its argument, the function `local.odds` assigns the rows to local variable `dim1` and columns to local `dim2`. It then takes each `i` from 1 `dim1-1` and each `j` from 1 to `dim2-1` and stores them as `results[i,j]` for each combination $[i,j]$ local odds ratio. These are then output via `return(results)`.
-
-
-
-## Example
 
 
 
