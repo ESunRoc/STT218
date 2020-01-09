@@ -6,5 +6,5 @@ Additionally, all required packages for the course are installed and loaded alon
 You can install URStat218 from GitHub with the following code in R or RStudio:
 ```r
 install.packages("devtools")
-devtools::install.github("ESunRoc/URStat218")
+devtools::install.github("ESunRoc/STT218")
 ```
