@@ -4,8 +4,12 @@
 #'
 #' @param tab An I x J contingency table passed through \code{table()}.
 #' @return \code{local.odds()} returns a matrix of the local odds ratios for the provided table
-#' @export
 #' @examples
+#' # make some table (for the purposes of this example, 3x3)
+#' table <- matrix(c(5134,2829,5661,3946,715,4588), nrow=2, ncol=2, byrow=TRUE)
+#' # then pass it through local.odds to examine the association between adjacent cells
+#' local.odds(table)
+#' @export
 
 
 local.odds <- function(tab){

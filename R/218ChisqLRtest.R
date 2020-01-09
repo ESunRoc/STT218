@@ -5,8 +5,14 @@
 #' @param tab An I x J contingency table passed through \code{table()}.
 #' @return Returns the likelihood ratio test statistic, G^2, the p-value of the test, and the degrees of freedom,
 #'     (I-1)(J-1).
-#' @export
 #' @examples
+#' # make some table (for the purposes of this example, 2x2)
+#' table <- matrix(c(5134,2829,3946,715), nrow=2, ncol=2, byrow=TRUE)
+#' # then pass this table through chisq.LRtest
+#' chisq.LRtest(table)
+#' @export
+
+
 
 chisq.LRtest <- function(tab){
   exp <- matrix(margin.table(tab,1))%*%t(matrix(margin.table(tab,2)))/margin.table(tab)
