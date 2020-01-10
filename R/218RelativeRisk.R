@@ -6,16 +6,17 @@
 #' @param conf.level The confidence level you are testing at; defaults to 95\%
 #' @return Returns the relative risk test statistic, r, the confidence level
 #'     of the interval, and the confidence interval itself.
-#' @export
+#' @examples
 #' # create some 2x2 contingency table 
 #' table <- matrix(c(766,110,702,89), nrow=2, ncol=2, byrow=TRUE)
 #' # pass it through relrisk at default confidence level of 0.95
 #' relrisk(table)
 #' # change confidence level to reflect desired
 #' relrisk(table, conf.level=.90)
-#' @examples
+#' @export
 
 relrisk = function(tab, conf.level=0.95){
+  if(nrow(tab) | ncol(tab) > 2) {warning("Only the first and second rows/columns will be used")}
   n11 <- tab[1,1]
   n12 <- tab[1,2]
   n21 <- tab[2,1]

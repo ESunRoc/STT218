@@ -10,6 +10,7 @@
 #' # then pass it through local.odds to examine the association between adjacent cells
 #' local.odds(table)
 #' @export
+#' 
 
 
 local.odds <- function(tab){

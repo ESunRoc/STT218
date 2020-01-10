@@ -16,6 +16,7 @@
 #' # change the default arguments in linear.trend to apply scores as needed
 #' linear.trend(table, row.scores=c(10000,20000,30000,40000), col.scores = c(-2,-1,1,2))
 #' @export
+#' 
 
 linear.trend <- function (x, row.scores = NULL, col.scores = NULL) {
   if(is.null(row.scores)){

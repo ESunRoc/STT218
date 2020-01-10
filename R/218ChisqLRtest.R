@@ -11,6 +11,7 @@
 #' # then pass this table through chisq.LRtest
 #' chisq.LRtest(table)
 #' @export
+#' 
 
 
 
