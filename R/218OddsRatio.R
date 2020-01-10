@@ -15,6 +15,7 @@
 #' # change confidence level to reflect desired
 #' odds(table, conf.level=.90)
 #' @export
+#' 
 
 
 odds <- function(tab, conf.level=0.95){

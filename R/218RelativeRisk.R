@@ -14,9 +14,13 @@
 #' # change confidence level to reflect desired
 #' relrisk(table, conf.level=.90)
 #' @export
+#' 
 
 relrisk = function(tab, conf.level=0.95){
-  if(nrow(tab) | ncol(tab) > 2) {warning("Only the first and second rows/columns will be used")}
+  # check if table is not 2x2, warn that only the first 2x2 will be used
+  if(nrow(tab) | ncol(tab) > 2) {
+    warning("Only rows/columns 1 and 2 will be used")
+    }
   n11 <- tab[1,1]
   n12 <- tab[1,2]
   n21 <- tab[2,1]
