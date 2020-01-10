@@ -8,7 +8,8 @@
 #'     of the interval, and the confidence interval itself.
 #' @examples
 #' # create some 2x2 contingency table 
-#' table <- matrix(c(766,110,702,89), nrow=2, ncol=2, byrow=TRUE)
+#' table <- matrix(c(766,110,702,89),  
+#'   nrow=2, ncol=2, byrow=TRUE)
 #' # pass it through odds at default confidence level of 0.95
 #' odds(table)
 #' # change confidence level to reflect desired
