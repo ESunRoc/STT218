@@ -21,11 +21,19 @@ License: GPL (>=3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
-Imports: stats, reshape, ggplot2, pROC, vcdExtra,
-         nnet, MASS, ResourceSelection, irr,
-         BradleyTerry2, devtools, knitr
+Imports: devtools,
+         rmarkdown
 Roxygen: list(Markdown = T)
 Suggests: 
-    rmarkdown,
-    testthat
+    knitr,
+    stats, 
+    reshape, 
+    ggplot2, 
+    pROC, 
+    vcdExtra,
+    nnet, 
+    MASS, 
+    ResourceSelection, 
+    irr,
+    BradleyTerry2
 VignetteBuilder: knitr
