@@ -4,8 +4,8 @@
 #'
 #' @param x A contingency table of structure matrix,
 #'     or factor (the latter being passed through as \code{table()})
-#' @param row.scores Numerical value assigned to rows for calculation purposes; Defaults to Null
-#' @param col.scores Numerical value assigned to columns for calculation purposes; Defaults to Null
+#' @param row.scores Numerical value assigned to rows for calculation purposes (default: Null)
+#' @param col.scores Numerical value assigned to columns for calculation purposes (default: Null)
 #' @return The M^2 test statistic, the parameters for the test (r and df), the type of
 #'     test performed, and the resultant p-value.
 #' @examples 

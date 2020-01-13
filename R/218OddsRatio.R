@@ -3,7 +3,7 @@
 #' Calculates the odds ratios for an inputted 2 x 2 table
 #'
 #' @param tab A 2 x 2 contingency table passed through \code{table()}.
-#' @param conf.level The confidence level you are testing at. Defaults to 95\%
+#' @param conf.level The confidence level you are testing at (default: 0.95)
 #' @return Returns the odds ratio test statistic, theta, the confidence level
 #'     of the interval, and the confidence interval itself.
 #' @examples

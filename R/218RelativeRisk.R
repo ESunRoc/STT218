@@ -3,7 +3,7 @@
 #'  This function calculates the relative risk for an inputted 2 x 2 table
 #'
 #' @param tab A 2 x 2 contingency table passed through \code{table()}.
-#' @param conf.level The confidence level you are testing at; defaults to 95\%
+#' @param conf.level The confidence level you are testing at (default: 0.95)
 #' @return Returns the relative risk test statistic, r, the confidence level
 #'     of the interval, and the confidence interval itself.
 #' @examples
