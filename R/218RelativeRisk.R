@@ -27,11 +27,11 @@ relrisk = function(tab, conf.level=0.95){
   n22 <- tab[2,2]
   n1 <- sum(tab[1,])
   n2 <- sum(tab[2,])
+  if(n1 | n2 == 0) {warning("Divide by 0")}
   p1 <- n11/n1
-  if(n1 == 0) {warning("Divide by 0")}
   p2 <- n21/n2
-  if(n2 == 0) {warning("Divide by 0")}
   r <- p1/p2
+  
 
   alpha <- 1-conf.level
   z <- abs(qnorm(alpha/2))
