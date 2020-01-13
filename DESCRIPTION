@@ -23,10 +23,9 @@ LazyData: true
 RoxygenNote: 7.0.2
 Imports: stats, reshape, ggplot2, pROC, vcdExtra,
          nnet, MASS, ResourceSelection, irr,
-         BradleyTerry2, devtools
+         BradleyTerry2, devtools, knitr
 Roxygen: list(Markdown = T)
 Suggests: 
-    knitr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
